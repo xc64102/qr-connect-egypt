@@ -2,37 +2,44 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hola Cafe & More | Alexandria</title>
-<meta name="description" content="Hola Cafe & More in Alexandria — coffee, cold drinks and light bites. Contact, order and find us from one page.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Business | QR Connect Egypt</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7f4ef;color:#211b17}.wrap{max-width:720px;margin:auto;padding:22px 16px 40px}.card{background:#fff;border:1px solid #e7dfd5;border-radius:24px;padding:24px;box-shadow:0 10px 30px rgba(30,20,10,.07)}.brand{text-align:center}.badge{display:inline-block;padding:7px 12px;border-radius:999px;background:#211b17;color:#fff;font-size:12px;font-weight:700;letter-spacing:.5px}.logo{width:82px;height:82px;border-radius:22px;margin:18px auto 12px;background:#eee4d8;display:flex;align-items:center;justify-content:center;font-size:34px}.brand h1{margin:0;font-size:30px}.brand p{margin:9px auto 20px;line-height:1.5;color:#6e6259;max-width:520px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.btn{display:block;text-align:center;text-decoration:none;padding:14px 10px;border-radius:14px;font-weight:700;border:1px solid #ddd3c8;color:#211b17;background:#fff}.btn.primary{background:#211b17;color:#fff;border-color:#211b17}.section{margin-top:26px}.section h2{font-size:18px;margin:0 0 12px}.menu{display:grid;grid-template-columns:1fr 1fr;gap:10px}.item{border:1px solid #e7dfd5;border-radius:16px;padding:14px}.item strong{display:block}.item span{display:block;margin-top:5px;color:#786b61;font-size:14px}.info{line-height:1.6;color:#5f544c}.notice{margin-top:22px;padding:12px 14px;border-radius:14px;background:#faf5ee;color:#6b5d53;font-size:12px;line-height:1.5}.footer{text-align:center;color:#8a7d73;font-size:12px;margin-top:18px}.powered{font-weight:700;color:#5d5148}@media(max-width:520px){.buttons,.menu{grid-template-columns:1fr}.card{padding:20px}.brand h1{font-size:26px}}
 </style>
 </head>
 <body>
 <div class="wrap"><main class="card">
-<section class="brand">
-<div class="badge">QR CONNECT EGYPT</div>
-<div class="logo">☕</div>
-<h1>Hola Cafe & More</h1>
-<p>Specialty coffee & light bites in Alexandria. One simple page for contact, ordering and location.</p>
-</section>
+<section class="brand"><div class="badge">QR CONNECT EGYPT</div><div class="logo">☕</div><h1 id="name"></h1><p id="tagline"></p></section>
 <section class="buttons">
-<a class="btn primary" href="tel:+201273056921">📞 Call</a>
-<a class="btn primary" href="https://hola.mubarmijonline.com/en" target="_blank" rel="noopener">☕ Order / Menu</a>
-<a class="btn" href="https://wa.me/201273056921" target="_blank" rel="noopener">💬 WhatsApp</a>
-<a class="btn" href="https://www.google.com/maps/search/?api=1&query=Hola%20Cafe%20%26%20More%2C%207X5P%2BX5G%2C%20Al%20Sagh%20Mohamed%20Abd%20Al%20Salam%2C%20Alexandria" target="_blank" rel="noopener">📍 Location</a>
+<a class="btn primary" id="call">📞 Call</a>
+<a class="btn primary" id="menuBtn" target="_blank" rel="noopener">☕ Menu / Order</a>
+<a class="btn" id="wa" target="_blank" rel="noopener">💬 WhatsApp</a>
+<a class="btn" id="maps" target="_blank" rel="noopener">📍 Location</a>
+<a class="btn" id="instagram" target="_blank" rel="noopener" hidden>📸 Instagram</a>
+<a class="btn" id="facebook" target="_blank" rel="noopener" hidden>📘 Facebook</a>
+<a class="btn" id="tiktok" target="_blank" rel="noopener" hidden>🎵 TikTok</a>
 </section>
-<section class="section"><h2>Popular menu</h2><div class="menu">
-<div class="item"><strong>Espresso</strong><span>from 40 EGP</span></div>
-<div class="item"><strong>Cappuccino</strong><span>from 65 EGP</span></div>
-<div class="item"><strong>Ice Latte</strong><span>from 65 EGP</span></div>
-<div class="item"><strong>Strawberry</strong><span>65 EGP</span></div>
-</div></section>
-<section class="section"><h2>Visit us</h2><div class="info">7X5P+X5G, Al Sagh Mohamed Abd Al Salam, Sidi Beshr Bahri, Alexandria, Egypt<br><strong>Hours:</strong> 10:00 AM – 1:00 AM</div></section>
-<section class="section"><h2>Order ahead</h2><div class="info">Browse the online menu, place your order, and collect it from the café.</div></section>
-<div class="notice"><strong>Customer-ready demo:</strong> This page uses publicly available business information. Before handing the page over as an official business asset, confirm the phone number, opening hours, menu prices and social links with the café owner.</div>
+<section class="section"><h2>Popular menu</h2><div class="menu" id="menu"></div></section>
+<section class="section"><h2>Visit us</h2><div class="info" id="address"></div></section>
+<section class="section"><h2>Opening hours</h2><div class="info" id="hours"></div></section>
+<div class="notice"><strong>Customer approval:</strong> Business information should be confirmed by the business owner before official publication.</div>
 <div class="footer"><span class="powered">Powered by QR Connect Egypt</span><br>Digital business page + QR setup</div>
 </main></div>
-</body>
-</html>
+<script src="data.js"></script>
+<script>
+const b=window.BUSINESS;
+document.title=b.name+' | QR Connect Egypt';
+document.getElementById('name').textContent=b.name;
+document.getElementById('tagline').textContent=b.tagline;
+document.getElementById('call').href='tel:'+b.phone;
+document.getElementById('menuBtn').href=b.menuUrl;
+document.getElementById('wa').href='https://wa.me/'+b.whatsapp;
+document.getElementById('maps').href=b.mapsUrl;
+document.getElementById('address').textContent=b.address;
+document.getElementById('hours').textContent=b.hours;
+document.getElementById('menu').innerHTML=b.menu.map(x=>`<div class="item"><strong>${escapeHtml(x[0])}</strong><span>${escapeHtml(x[1])}</span></div>`).join('');
+[['instagram',b.instagram],['facebook',b.facebook],['tiktok',b.tiktok]].forEach(([id,url])=>{if(url){const el=document.getElementById(id);el.href=url;el.hidden=false;}});
+function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+</script>
+</body></html>

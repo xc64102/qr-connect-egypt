@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR Connect Egypt — Update Tool</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;max-width:820px;margin:auto;padding:20px;background:#f6f3ef;color:#211b17}main{background:#fff;padding:24px;border-radius:20px;border:1px solid #ddd3c8}h1{margin-top:0}label{display:block;font-weight:700;margin-top:14px}input,textarea{width:100%;padding:11px;margin-top:6px;border:1px solid #ccc;border-radius:8px;font:inherit}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.item{display:grid;grid-template-columns:1fr 160px 42px;gap:8px;margin:8px 0}.item input{margin:0}.btn{padding:12px 16px;border:0;border-radius:9px;margin-top:15px;cursor:pointer;font-weight:700}.primary{background:#211b17;color:white}.secondary{background:#eee5db}.danger{background:#f2dddd}.box{background:#faf5ee;padding:14px;border-radius:12px;margin:18px 0;line-height:1.5}.status{margin-top:15px;padding:12px;border-radius:9px;background:#eef6ee;display:none;white-space:pre-wrap}@media(max-width:600px){.row,.item{grid-template-columns:1fr}.item button{margin-top:0}}
+</style>
+</head>
+<body><main>
+<h1>QR Connect Egypt — Update Tool</h1>
+<p>Change the business information, then download a new <b>data.js</b>. Replace the old <b>data.js</b> on GitHub. The QR code itself does <b>not</b> need to change.</p>
+<div class="box"><b>Important:</b> This is a local preparation tool. It does not automatically publish changes to GitHub. After downloading <b>data.js</b>, upload/replace it in your GitHub repository and commit the change.</div>
+<label>Business name<input id="name"></label>
+<label>Tagline<input id="tagline"></label>
+<div class="row"><label>Phone<input id="phone"></label><label>WhatsApp number (country code, no +)<input id="wa"></label></div>
+<label>Menu / ordering URL<input id="menuUrl"></label>
+<label>Google Maps URL<input id="mapsUrl"></label>
+<div class="row"><label>Instagram URL<input id="instagram"></label><label>Facebook URL<input id="facebook"></label></div>
+<label>TikTok URL<input id="tiktok"></label>
+<label>Address<textarea id="address" rows="3"></textarea></label>
+<label>Opening hours<input id="hours"></label>
+<h2>Menu</h2><div id="menu"></div>
+<button class="btn secondary" type="button" onclick="addItem()">+ Add menu item</button>
+<br><button class="btn primary" type="button" onclick="downloadData()">Download updated data.js</button>
+<button class="btn secondary" type="button" onclick="resetData()">Reset</button>
+<div id="status" class="status"></div>
+</main>
+<script src="data.js"></script>
+<script>
+const original=JSON.parse(JSON.stringify(window.BUSINESS));
+let menu=JSON.parse(JSON.stringify(window.BUSINESS.menu||[]));
+const ids=['name','tagline','phone','menuUrl','mapsUrl','instagram','facebook','tiktok','address','hours'];
+ids.forEach(id=>document.getElementById(id).value=window.BUSINESS[id]||'');
+document.getElementById('wa').value=window.BUSINESS.whatsapp||'';
+function render(){document.getElementById('menu').innerHTML=menu.map((x,i)=>`<div class="item"><input id="mn${i}" value="${esc(x[0])}" placeholder="Item name"><input id="mp${i}" value="${esc(x[1])}" placeholder="Price"><button class="btn danger" type="button" onclick="removeItem(${i})">×</button></div>`).join('')}
+function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function syncMenu(){menu=menu.map((x,i)=>[document.getElementById('mn'+i)?.value||'',document.getElementById('mp'+i)?.value||''])}
+function addItem(){syncMenu();menu.push(['New item','0 EGP']);render()}
+function removeItem(i){syncMenu();menu.splice(i,1);render()}
+function downloadData(){syncMenu();const out={};ids.forEach(id=>out[id]=document.getElementById(id).value.trim());out.whatsapp=document.getElementById('wa').value.trim().replace(/\D/g,'');out.menu=menu.filter(x=>x[0]||x[1]);const js='window.BUSINESS = '+JSON.stringify(out,null,2)+';\n';const blob=new Blob([js],{type:'text/javascript;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='data.js';a.click();URL.revokeObjectURL(a.href);show('Downloaded data.js. Now replace the old data.js in GitHub and commit the change.');}
+function resetData(){window.BUSINESS=JSON.parse(JSON.stringify(original));menu=JSON.parse(JSON.stringify(original.menu||[]));ids.forEach(id=>document.getElementById(id).value=original[id]||'');document.getElementById('wa').value=original.whatsapp||'';render();show('Reset complete.');}
+function show(t){const s=document.getElementById('status');s.textContent=t;s.style.display='block'}
+render();
+</script></body></html>
